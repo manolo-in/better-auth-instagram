@@ -5,7 +5,7 @@
 # better-auth-instagram
 Instagram Provider for Better-Auth. Wrapper around [Generic OAuth](https://www.better-auth.com/docs/plugins/generic-oauth) plugin.
 
-This package allow you to easily add Instagram OpenID Connect (OIDC) flow to your application.
+This package allow you to easily add Login with Instagram to your application.
 
 ### Installation
 
@@ -65,7 +65,7 @@ export const auth = betterAuth({
 ```ts
 import { createAuthClient } from "better-auth/client"
 import { genericOAuthClient } from "better-auth/client/plugins"
-import type { auth } from "./auth";
+import type { auth } from "@/auth";
 
 export const authClient = createAuthClient({
     plugins: [
@@ -76,7 +76,7 @@ export const authClient = createAuthClient({
 ```
 
 ```ts
-import { authClient } from "./lib/auth";
+import { authClient } from "@/lib/auth";
 
 await authClient.signIn.oauth2({
     providerId: "instagram"
@@ -98,7 +98,7 @@ export const auth = betterAuth({
         genericOAuth({
             config: [
                 instagramConfig({
-                    getEmail: (profile) => `${profile.username}@example.com`
+                    getEmail: (profile) => `${profile.username}@example.com`,
                     scopes: ["instagram_business_basic", "instagram_business_manage_messages"],
                     fields: ["id", "name", "username", "account_type"],
                     appId: process.env.INSTAGRAM_APP_ID,
@@ -110,6 +110,79 @@ export const auth = betterAuth({
         }),
     ],
 });
+```
+
+### Link Instagram Account with Username
+
+Here is an example of how to link Instagram account.
+
+Because Better-Auth doesn't update profile data on account linking, we need to do it manually using database hooks.
+
+We provided an easy instagram API function created on top of [better-fetch](https://better-fetch.vercel.app/).
+
+```ts
+import { betterAuth, APIError } from "better-auth";
+import { instagram } from "better-auth-instagram";
+import { instagramAPI } from "better-auth-instagram/api";
+
+import { schema, db, eq } from "@/db";
+
+export const auth = betterAuth({
+    account: {
+        accountLinking: {
+            enabled: true,
+            allowDifferentEmails: true,
+            trustedProviders: ["google", "instagram"],
+            updateUserInfoOnLink: true,
+        },
+    },
+    socialProviders: {
+        google: {
+            prompt: "select_account",
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        },
+    },
+    plugins: [
+        instagram(),
+    ],
+    databaseHooks: {
+        account: {
+            create: {
+                after: async (account, ctx) => {
+                    if (account.providerId !== "instagram") return;
+
+                    const { data, error } = await instagramAPI("/:id", {
+                        params: {
+                            id: account.accountId,
+                        },
+                        query: {
+                            fields: ["username"],
+                            access_token: account.accessToken as string,
+                        },
+                    });
+
+                    if (error)
+                        throw new APIError("INTERNAL_SERVER_ERROR");
+
+                    // Use manual database query to update username
+                    // eg: drizzle-orm
+                    await db.update(schema.user)
+                        .set({ username: data.username })
+                        .where(eq(schema.user.id, account.userId));
+                }
+            }
+        }
+    }
+});
+```
+
+```ts
+import { authClient } from "@/lib/auth";
+
+await authClient.oauth2.link({
+    providerId: "instagram"
+);
 ```
 
 ### Resources
