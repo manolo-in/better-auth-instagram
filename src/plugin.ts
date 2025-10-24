@@ -37,7 +37,7 @@ export type InstagramOptions = {
      *
      * @default `${profile.id}@instagram.com`
      */
-    placeHolderEmail?: (profile: InstagramProfile) => string;
+    getEmail?: (profile: Partial<InstagramProfile> & { id: string }) => string;
     /**
      * Same as `clientId` in GenericOAuthConfig.
      *
@@ -66,7 +66,7 @@ export const instagramConfig = ({
 
     scopes = ["instagram_business_basic"],
     fields = ["id", "name", "username"],
-    placeHolderEmail = (profile) => `${profile.id}@instagram.com`,
+    getEmail = (profile) => `${profile.id}@instagram.com`,
 
     config,
 }: InstagramOptions) => {
@@ -83,7 +83,8 @@ export const instagramConfig = ({
             const data = profile as InstagramProfile;
 
             return {
-                email: placeHolderEmail(data),
+                ...profile,
+                email: getEmail(data),
             };
         },
         ...config,
