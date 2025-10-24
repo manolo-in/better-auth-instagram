@@ -98,8 +98,8 @@ export const auth = betterAuth({
         genericOAuth({
             config: [
                 instagramConfig({
-                    scopes = ["instagram_business_basic", "instagram_business_manage_messages"],
-                    fields = ["id", "name", "username", "account_type"],
+                    scopes: ["instagram_business_basic", "instagram_business_manage_messages"],
+                    fields: ["id", "name", "username", "account_type"],
                     appId: process.env.INSTAGRAM_APP_ID,
                     appSecret: process.env.INSTAGRAM_APP_SECRET
                 }),

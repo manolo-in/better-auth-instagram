@@ -6,7 +6,7 @@ export type InstagramProfile = {
     id: string;
     name: string;
     username: string;
-    account_type: string; // "BUSINESS"
+    account_type: "BUSINESS" | "CREATOR" | "PERSONAL" | (string & {})
 };
 
 
@@ -35,16 +35,18 @@ export type InstagramOptions = {
     /**
      * To generate a placeholder email since Instagram API does not provide email.
      *
-     * Use mapProfileToUser in config for custom email mapping.
-     *
      * @default `${profile.id}@instagram.com`
      */
     placeHolderEmail?: (profile: InstagramProfile) => string;
     /**
+     * Same as `clientId` in GenericOAuthConfig.
+     *
      * @default process.env.INSTAGRAM_APP_ID
      */
     appId?: string;
     /**
+     * Same as `clientSecret` in GenericOAuthConfig.
+     *
      * @default process.env.INSTAGRAM_APP_SECRET
      */
     appSecret?: string;
@@ -56,6 +58,7 @@ export type InstagramOptions = {
 
 /**
  * Resources
+ * https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/
  */
 export const instagramConfig = ({
     appId = process.env.INSTAGRAM_APP_ID as string,
@@ -89,6 +92,7 @@ export const instagramConfig = ({
 
 /**
  * Resources
+ * https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/
  */
 export const instagram = (options: InstagramOptions) =>
     genericOAuth({
