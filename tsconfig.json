@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "TypeScript Library",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "types": ["@types/node"],
+    "lib": [
+      "dom",
+      "ES2021"
+    ],
+    "module": "ESNext",
+    "target": "ES2021",
+    "stripInternal": true
+  },
+  "include": ["."],
+  "exclude": ["*/dist", "dist", "build", "node_modules"],
+}

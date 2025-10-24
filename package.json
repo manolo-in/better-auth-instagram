@@ -1,0 +1,61 @@
+{
+	"name": "better-auth-instagram",
+	"description": "Instagram Provider for Better-Auth",
+	"version": "0.0.1",
+	"license": "MIT",
+	"keywords": ["instagram", "meta", "better-auth", "oauth", "oidc", "typescript"],
+	"files": [
+		"dist/**/*",
+		"src/**/*"
+	],
+	"scripts": {
+		"prepublishOnly": "bun run build",
+		"build": "tsup",
+		"build:watch": "tsup --watch",
+		"type-check": "tsc --noEmit"
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		"./package.json": "./package.json",
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js"
+		},
+		"./api": {
+			"types": "./dist/api.d.ts",
+			"import": "./dist/api.mjs",
+			"require": "./dist/api.js"
+		}
+	},
+	"dependencies": {
+		"@better-fetch/fetch": "^1.1.18",
+		"better-auth": "^1.3.27",
+		"zod": "^4.1.12"
+	},
+	"devDependencies": {
+		"@types/node": "20.17.24",
+		"tsup": "^8",
+		"typescript": "5.6.3"
+	},
+	"peerDependencies": {
+		"@better-fetch/fetch": "^1.1.18",
+		"better-auth": "^1.3",
+		"zod": "^4.0.0"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/manolo-in/better-auth-instagram.git"
+	},
+	"bugs": {
+		"url": "https://github.com/manolo-in/better-auth-instagram/issues"
+	}
+}
