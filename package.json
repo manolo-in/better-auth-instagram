@@ -1,7 +1,7 @@
 {
 	"name": "better-auth-instagram",
 	"description": "Instagram OAuth Provider for Better-Auth",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"license": "MIT",
 	"keywords": ["instagram", "meta", "better-auth", "oauth", "typescript"],
 	"files": [
