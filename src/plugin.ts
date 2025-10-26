@@ -57,8 +57,7 @@ export type InstagramOptions = {
 };
 
 /**
- * Resources
- * https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/
+ * @see https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/
  */
 export const instagramConfig = ({
     appId = process.env.INSTAGRAM_APP_ID as string,
@@ -69,7 +68,7 @@ export const instagramConfig = ({
     getEmail = (profile) => `${profile.id}@instagram.com`,
 
     config,
-}: InstagramOptions) => {
+}: InstagramOptions = {}) => {
     const userInfoUrl = `https://graph.instagram.com/me?fields=${fields.join(",")}`;
     return {
         providerId: "instagram",
@@ -92,10 +91,9 @@ export const instagramConfig = ({
 };
 
 /**
- * Resources
- * https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/
+ * @see https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/
  */
-export const instagram = (options: InstagramOptions) =>
+export const instagram = (options: InstagramOptions = {}) =>
     genericOAuth({
         config: [instagramConfig(options)],
     });

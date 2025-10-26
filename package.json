@@ -1,7 +1,7 @@
 {
 	"name": "better-auth-instagram",
 	"description": "Instagram OAuth Provider for Better-Auth",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"license": "MIT",
 	"keywords": ["instagram", "meta", "better-auth", "oauth", "typescript"],
 	"files": [
@@ -10,8 +10,8 @@
 	],
 	"scripts": {
 		"prepublishOnly": "bun run build",
-		"build": "tsup",
-		"build:watch": "tsup --watch",
+		"build": "tsdown",
+		"build:watch": "tsdown --watch",
 		"type-check": "tsc --noEmit"
 	},
 	"main": "./dist/index.js",
@@ -37,7 +37,7 @@
 	},
 	"devDependencies": {
 		"@types/node": "20.17.24",
-		"tsup": "^8",
+		"tsdown": "^0.15.10",
 		"typescript": "5.6.3"
 	},
 	"peerDependencies": {
