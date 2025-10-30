@@ -39,6 +39,12 @@ export type InstagramOptions = {
      */
     getEmail?: (profile: Partial<InstagramProfile> & { id: string }) => string;
     /**
+     * To force a user to re-authenticate with their credentials, even if they are currently logged in to Instagram.
+     *
+     * @default false
+     */
+    forceReAuth?: boolean;
+    /**
      * Same as `clientId` in GenericOAuthConfig.
      *
      * @default process.env.INSTAGRAM_APP_ID
@@ -62,6 +68,7 @@ export type InstagramOptions = {
 export const instagramConfig = ({
     appId = process.env.INSTAGRAM_APP_ID as string,
     appSecret = process.env.INSTAGRAM_APP_SECRET,
+    forceReAuth = false,
 
     scopes = ["instagram_business_basic"],
     fields = ["id", "name", "username", "profile_picture_url"],
@@ -70,11 +77,13 @@ export const instagramConfig = ({
     config,
 }: InstagramOptions = {}) => {
     const userInfoUrl = `https://graph.instagram.com/me?fields=${fields.join(",")}`;
+    const authorizationUrl = `https://instagram.com/oauth/authorize${forceReAuth ? "?force_reauth=true" : ""}`;
+
     return {
         providerId: "instagram",
         clientId: appId,
         clientSecret: appSecret,
-        authorizationUrl: "https://instagram.com/oauth/authorize",
+        authorizationUrl,
         tokenUrl: "https://api.instagram.com/oauth/access_token",
         userInfoUrl,
         scopes,
