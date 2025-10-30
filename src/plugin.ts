@@ -1,4 +1,5 @@
 import { genericOAuth, type GenericOAuthConfig } from "better-auth/plugins";
+import type { Fields } from "./utils";
 import type * as Auth from "better-auth";
 
 export type InstagramProfile = {
@@ -7,12 +8,14 @@ export type InstagramProfile = {
     name: string;
     username: string;
     account_type: "BUSINESS" | "CREATOR" | "PERSONAL" | (string & {})
+    profile_picture_url?: string
 };
 
 
 export type InstagramOptions = {
     /**
      * To specify which scopes to request from Instagram API.
+     *
      * @default ["instagram_business_basic"]
      */
     scopes?: (
@@ -20,18 +23,15 @@ export type InstagramOptions = {
         "instagram_business_manage_messages" |
         "instagram_business_content_publish" |
         "instagram_business_manage_insights" |
-        "instagram_business_manage_comments"
+        "instagram_business_manage_comments" |
+        (string & {})
     )[];
     /**
      * To specify which fields to fetch from Instagram API for user profile.
-     * @default ["id", "name", "username"]
+     *
+     * @default ["id", "name", "username", "profile_picture_url"]
      */
-    fields?: (
-        "id" |
-        "name" |
-        "username" |
-        "account_type"
-    )[];
+    fields?: (Fields | (string & {}))[];
     /**
      * To generate a placeholder email since Instagram API does not provide email.
      *
@@ -64,7 +64,7 @@ export const instagramConfig = ({
     appSecret = process.env.INSTAGRAM_APP_SECRET,
 
     scopes = ["instagram_business_basic"],
-    fields = ["id", "name", "username"],
+    fields = ["id", "name", "username", "profile_picture_url"],
     getEmail = (profile) => `${profile.id}@instagram.com`,
 
     config,
@@ -83,6 +83,7 @@ export const instagramConfig = ({
 
             return {
                 ...profile,
+                image: data.profile_picture_url,
                 email: getEmail(data),
             };
         },

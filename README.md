@@ -152,10 +152,7 @@ export const auth = betterAuth({
                 after: async (account, ctx) => {
                     if (account.providerId !== "instagram") return;
 
-                    const { data, error } = await instagramAPI("/:id", {
-                        params: {
-                            id: account.accountId,
-                        },
+                    const { data, error } = await instagramAPI("/me", {
                         query: {
                             fields: ["username"],
                             access_token: account.accessToken as string,
