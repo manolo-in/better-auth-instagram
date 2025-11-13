@@ -31,8 +31,8 @@ Homepage URL: http://localhost:3000
 
 4. Add Instagram product to your app
 5. Setup API with Instagram business login
-6. Add an Instagram Test User to your app
-6. Generate access tokens with the test user
+6. Add an Instagram account to your app as roles: Instagram Tester
+6. Accept the Tester Invite from that account [manage access](https://www.instagram.com/accounts/manage_access/)
 7. Set up Instagram business login
 8. Paste the redirect URI
 
